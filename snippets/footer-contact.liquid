@@ -1,0 +1,28 @@
+<div class="contact">
+  <ul class="fa-ul">
+    {%- if shop.phone -%}
+      <li>
+        <span class="fa-li"><i class="fas fa-phone"></i></span>
+
+        {{shop.phone}}
+      </li>
+    {%- endif -%}
+
+    {%- if shop.email -%}
+      <li>
+        <span class="fa-li"><i class="fas fa-envelope"></i></span>
+
+        {{shop.email}}
+      </li>
+    {%- endif -%}
+
+    {%- if block.settings.opening -%}
+      <li>
+        <span class="fa-li"><i class="fas fa-calendar"></i></span>
+
+        {{ 'layout.footer.opening' | t }}
+        {{ block.settings.opening }}
+      </li>
+    {%- endif -%}
+  </ul>
+</div>

@@ -1,0 +1,74 @@
+<section class="section is-small" data-section-id="{{ section.id }}" data-section-type="product-tabs">
+  <div class="container">
+    <div class="columns" data-section-type="tabs">
+      <div class="column is-full">
+        <div class="custom-tabs tabs">
+          <ul class="columns is-multiline is-gapless">
+            {%- for block in section.blocks -%}
+              <li class="{% if forloop.first %}is-active {% endif %}is-full-mobile column is-narrow" {{ block.shopify_attributes }}>
+                <a>{{block.settings.tab_title}}</a>
+              </li>
+
+              <div class="tile is-12 section is-small">
+                {%- case {{block.settings.tab_options}} -%}
+                  {%- when 'description' -%}
+                    {{ product.description }}
+
+                  {%- when 'returns' -%}
+                    {%- if product.metafields.product_return['Product Return'] -%}
+                      {{ product.metafields.product_return['Product Return'] }}
+                    {%- else -%}
+                      {{ block.settings.tab_content }}
+                    {%- endif -%}
+                  {%- else -%}
+
+                {%- endcase -%}
+              </div>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Product Tab",
+    "blocks": [
+      {
+        "type": "tabs",
+        "name": "Tabs",
+        "settings": [
+          {
+            "type": "text",
+            "id": "tab_title",
+            "label": "Tab Title"
+          },
+          {
+            "type": "richtext",
+            "id": "tab_content",
+            "label": "Tab Content",
+            "info": "Only shown if metafield 'product_return' is empty."
+          },
+          {
+            "type": "select",
+            "id": "tab_options",
+            "label": "Tab Options",
+            "options": [
+              {
+                "value": "description",
+                "label": "Product Description"
+              },
+              {
+                "value": "returns",
+                "label": "Returns"
+              }
+            ],
+            "default": "description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

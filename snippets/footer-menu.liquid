@@ -1,0 +1,31 @@
+{%- if block.settings.menu -%}
+  <ul>
+    {%- for link in linklists[block.settings.menu].links -%}
+      <li>
+        {{ link.title | link_to: link.url, link.title }}
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- endif -%}
+
+
+{%- if block.settings.social -%}
+  <div class="has-padding-top-small">
+    <div class="columns is-multiline">
+      {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+      {% for social in social_accounts %}
+        {%- assign social_handle = social | handleize -%}
+        {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+        {% capture social_icon %}fa-{{ social_handle }}{% endcapture %}
+
+        {% if settings[social_link] != blank %}
+          <div class="column">
+            <a class="icon" href="{{ settings[social_link] }}" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}">
+              <i class="fab {{ social_icon }}"></i>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{%- endif -%}

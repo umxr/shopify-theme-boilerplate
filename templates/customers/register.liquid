@@ -1,0 +1,98 @@
+<section class="section">
+  <div class="has-text-centered content container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <h1>{{ 'customer.register.title' | t }}</h1>
+
+        {% form 'create_customer' %}
+          {% if form.errors %}
+            <div class="notification is-danger">
+              {{ form.errors | default_errors }}
+            </div>
+            {% endif %}
+          
+          <div class="field">
+            <label for="FirstName" class="label">
+              {{ 'customer.register.first_name' | t }}
+            </label>
+            <div class="control">
+              <input type="text"
+                name="customer[first_name]"
+                id="FirstName"
+                class="input" 
+                placeholder="{{ 'customer.register.first_name' | t }}"
+                autofocus
+                {% if form.first_name %}value="{{ form.first_name }}"{% endif %}>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label for="LastName" class="label">
+              {{ 'customer.register.last_name' | t }}
+            </label>
+            <div class="control">
+              <input type="text"
+                name="customer[last_name]"
+                id="LastName"
+                class="input" 
+                placeholder="{{ 'customer.register.last_name' | t }}"
+                {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label for="Email" class="label">
+              {{ 'customer.register.email' | t }}
+            </label>
+            <div class="control">
+              <input type="email"
+                name="customer[email]"
+                id="Email"
+                class="input {% if form.errors contains 'email' %}is-danger{% endif %}"
+                placeholder="{{ 'customer.register.email' | t }}"
+                value="{% if form.email %}{{ form.email }}{% endif %}"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="CreatePassword" class="label">
+              {{ 'customer.register.password' | t }}
+            </label>
+            <div class="control">
+              <input type="password"
+                name="customer[password]"
+                id="CreatePassword"
+                class="input {% if form.errors contains 'password' %}is-danger{% endif %}"
+                placeholder="{{ 'customer.register.password' | t }}">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="checkbox" for="acceptsMarketing">
+              <input type="hidden" 
+                name="customer[accepts_marketing]" 
+                value="">
+              <input type="checkbox" 
+                name="customer[accepts_marketing]" 
+                class="checkbox"
+                id="acceptsMarketing">
+              {{ 'customer.register.newsletter' | t }}
+            </label>
+          </div>
+
+          <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+              <input type="submit" class="button is-primary" value="{{ 'customer.register.submit' | t }}">
+            </div>
+            <div class="control">
+              <a href="{{ shop.url }}" class="button">{{ 'customer.register.cancel' | t }}</a>
+            </div>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>

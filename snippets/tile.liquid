@@ -1,0 +1,12 @@
+<article class="tile is-child notification is-primary has-bg-repeat-no-repeat has-bg-size-cover has-bg-position-center"
+         {% if block.settings.tile_image %}style="background-image: url({{block.settings.tile_image | img_url: '1000x1000'}})"{% endif %}>
+  {%- if block.settings.tile_title -%}
+    <p class="title">{{block.settings.tile_title}}</p>
+  {%- endif -%}
+
+  {%- if block.settings.tile_content -%}
+    <div class="content">
+      {{block.settings.tile_content}}
+    </div>
+  {%- endif -%}
+</article>

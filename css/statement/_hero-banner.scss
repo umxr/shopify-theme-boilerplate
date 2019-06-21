@@ -1,0 +1,18 @@
+.hero-banner {
+  .banner {
+    position: relative;
+    overflow: hidden;
+
+    &__image {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+
+      img {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+}

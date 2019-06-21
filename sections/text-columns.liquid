@@ -1,0 +1,74 @@
+<section class="section">
+  <div class="container">
+    <div class="columns {% if section.settings.multiline %}is-multiline{% endif %}">
+      {%- for block in section.blocks -%}
+        <div class="column {% if block.settings.column_width != 0 %}is-{{block.settings.column_width}}{% endif %}">
+          <div class="notification is-primary height-100 has-bg-size-cover has-bg-repeat-no-repeat has-bg-position-center" {% if block.settings.column_image %}style="background-image: url({{block.settings.column_image | img_url: '1000x1000'}})"{% endif %}>
+            {%- if block.settings.column_title -%}
+              <div>
+                <h4 class="title is-4">{{ block.settings.column_title }}</h4>
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.column_content -%}
+              <div class="content">
+                {{ block.settings.column_content }}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "text_column",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "multiline",
+      "label": "Is Multiline?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Text Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "column_title",
+          "label": "Column Title"
+        },
+        {
+          "type": "richtext",
+          "id": "column_content",
+          "label": "Column Content"
+        },
+        {
+          "type": "range",
+          "id": "column_width",
+          "min": 0,
+          "max": 12,
+          "step": 1,
+          "label": "Column Width (0 is auto)",
+          "default": 0
+        },
+        {
+          "type": "image_picker",
+          "id": "column_image",
+          "label": "Background Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Content",
+      "name": "Text Columns"
+    }
+  ]
+}
+{% endschema %}

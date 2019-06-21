@@ -1,0 +1,86 @@
+<section class="section" data-section-id="{{ section.id }}" data-section-type="logo-slider-section">
+  <div class="container">
+    <div class="content">
+      <h2>{{section.settings.logo_slider_title}}</h2>
+    </div>
+
+    <div class="logo-slider" data-banner-dots="{{section.settings.logo_slider_dots}}" data-banner-arrows="{{section.settings.logo_slider_arrows}}" data-slides-to-show="{{section.settings.logo_slides_to_show}}">
+      {%- for block in section.blocks -%}
+        <div class="logo-slide" {{ block.shopify_attributes }}>
+          <div class="has-text-centered columns is-centered is-vcentered">
+            {%- if block.settings.logo_slide_url -%}
+              <a href="{{block.settings.logo_slide_url}}" class="is-inline-block">
+            {%- else -%}
+              <span class="is-inline-block">
+            {%- endif -%}
+              <img  src="{{ block.settings.logo_slide_image | img_url: 'small', crop: 'center' }}"
+                    srcset="{{ block.settings.logo_slide_image | img_url: 'small', crop: 'center'  }} 1x, {{ block.settings.logo_slide_image | img_url: 'medium', crop: 'center', scale: 2 }} 2x"
+                    alt="{{ block.settings.logo_slide_image.alt | default: shop.name }}"
+                    class="column"/>
+            {%- if block.settings.logo_slide_url -%}
+              </a>
+            {%- else -%}
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Logo Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "logo_slider_title",
+      "label": "Logo Slider Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_slider_dots",
+      "label": "Logo Slider Show Dots?"
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_slider_arrows",
+      "label": "Logo Slider Show Arrows?"
+    },
+    {
+      "type": "range",
+      "id": "logo_slides_to_show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Slides Per Page",
+      "default": 6
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo_slide",
+      "name": "Logo Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_slide_image",
+          "label": "Logo Slide Image"
+        },
+        {
+          "type": "url",
+          "id": "logo_slide_url",
+          "label": "Logo Slide Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "category": "Content",
+      "name": "Logo Slider"
+    }
+  ]
+}
+{% endschema %}

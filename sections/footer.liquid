@@ -1,0 +1,136 @@
+<footer>
+  <div class="footer">
+    <div class="container">
+      <div class="columns">
+        {%- for block in section.blocks -%}
+          <div class="column is-{{block.settings.column_width}}">
+            {%- if block.type == 'menu' -%}
+              {%- include 'footer-menu' -%}
+
+            {%- elsif block.type == 'contact' -%}
+              {%- include 'footer-contact' -%}
+
+            {%- elsif block.type == 'newsletter' -%}
+              {%- include 'footer-newsletter' -%}
+
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="copyright has-padding-small has-background-white-ter">
+    <div class="container">
+      <div class="columns is-justify-content-space-between">
+        <div class="column is-narrow">
+          <p>{{ 'layout.footer.copyright' | t }} &copy; {{ 'now' | date: "%Y" }} <strong>{{ shop.name | link_to: '/' }}</strong>.</p>
+        </div>
+
+        {% if section.settings.show_payment_icons %}
+          {% unless shop.enabled_payment_types == empty %}
+            <div class="column is-narrow">
+              {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,bitcoin,diners_club,discover,jcb,master,paypal,visa' | split: ',' -%}
+                <p class="payment-icons">
+                {% for type in shop.enabled_payment_types %}
+                  {% if payment_icons_available contains type %}
+                    {%- assign icon_name = type | prepend: 'fa-' -%}
+
+                    <i class="fab fa-fw {{ icon_name | replace: 'amazon_payments', 'amazon' | replace: 'american_express', 'cc-amex' | replace: 'apple_pay', 'apple' | replace: 'apple_pay', 'apple' | replace: 'diners_club', 'cc-diners-club' | replace: 'discover', 'cc-discover' | replace: 'jcb', 'cc-jcb' | replace: 'master', 'cc-mastercard' | replace: 'visa', 'cc-visa' }}"></i>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endunless %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "max_blocks": 6,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "settings": [
+          {
+            "type": "range",
+            "id": "column_width",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "label": "Column Width",
+            "default": 3
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Subtitle"
+          }
+        ]
+      },
+      {
+        "type": "contact",
+        "name": "Contact",
+        "settings": [
+          {
+            "type": "text",
+            "id": "opening",
+            "label": "Opening Hours"
+          },
+          {
+            "type": "range",
+            "id": "column_width",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "label": "Column Width",
+            "default": 3
+          }
+        ]
+      },
+      {
+        "type": "menu",
+        "name": "Menu",
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          },
+          {
+            "type": "range",
+            "id": "column_width",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "label": "Column Width",
+            "default": 3
+          },
+          {
+            "type": "checkbox",
+            "id": "social",
+            "label": "Show social icons?"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

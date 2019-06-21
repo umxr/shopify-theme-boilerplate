@@ -1,0 +1,133 @@
+{% if cart.item_count > 0 %}
+  <section class="section cart-template">
+    <div class="container">
+      <form action="/cart" method="post" novalidate>
+        <div class="columns is-mobile is-multiline">
+          <div class="column is-12-mobile is-12-tablet is-8-desktop is-9-widescreen">
+            {% for item in cart.items %}
+              <div class="level">
+                <div class="level-item columns is-vcentered is-mobile">
+                  <div class="column is-narrow">
+                    <a href="{{ item.url | within: collections.all }}">
+                      <img src="{{ item | img_url: '100x100' }}" alt="{{ item.title | escape }}">
+                    </a>
+                  </div>
+
+                  <div class="level-item column is-wide">
+                    <div class="columns is-vcentered is-justify-content-space-between is-mobile">
+                      <a class="column item-title is-block is-narrow" href="{{ item.url }}">{{ item.product.title }}</a>
+
+                      <span class="column is-narrow has-text-weight-bold is-size-5 is-hidden-touch">
+                        {% if item.original_line_price != item.line_price %}
+                          <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                          {{ item.price | money }}
+                          <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                          <s>{{ item.original_price | money }}</s>
+                        {% else %}
+                          {{ item.price | money }}
+                        {% endif %}
+                      </span>
+
+                      <a class="column is-narrow is-hidden-desktop" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
+                        <i class="fa fa-trash"></i>
+                      </a>
+                    </div>
+
+                    <div class="columns is-vcentered is-justify-content-space-between is-mobile">
+                      <div class="column is-narrow-widescreen is-narrow-desktop">
+                        <input type="number"
+                          name="updates[]"
+                          id="updates_{{ item.key }}"
+                          class="input updateQty"
+                          value="{{ item.quantity }}"
+                          data-item-id="{{ item.id }}"
+                          min="0"
+                          aria-label="{{ 'cart.general.item_quantity' | t }}" />
+                      </div>
+
+                      <span class="column is-narrow has-text-weight-bold is-size-5 is-hidden-desktop">
+                        {% if item.original_line_price != item.line_price %}
+                          <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                          {{ item.price | money }}
+                          <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                          <s>{{ item.original_price | money }}</s>
+                        {% else %}
+                          {{ item.price | money }}
+                        {% endif %}
+                      </span>
+
+                      <a class="column is-hidden-touch is-narrow" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
+                        <i class="fa fa-trash"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="column is-12-mobile is-12-tablet is-4-desktop is-3-widescreen">
+            <div class="summary-wrapper box">
+              <p class="field">
+                <span><i class="fa fa-badge-percent"></i></span>
+                {{ 'cart.general.promo_code_message' | t }}
+              </p>
+
+              <div class="field is-flex">
+                <p>{{ 'cart.general.subtotal' | t }} {{ cart.total_price | money }}</p>
+
+                {% if cart.total_discounts > 0 %}
+                  <p data-cart-render>{{ 'cart.general.savings' | t }} {{ cart.total_discounts | money }}</p>
+                {% endif %}
+              </div>
+
+              <div class="field">
+                <button type="submit" name="checkout" class="button is-primary">
+                  <span class="icon">
+                    <i class="fa fa-lock"></i>
+                  </span>
+
+                  <span>{{ 'cart.general.checkout' | t }}</span>
+                </button>
+              </div>
+
+              <div class="field">
+                <ul class="columns is-vcentered is-mobile">
+                {% assign payment_icons_available = 'visa,master,american_express,paypal,apple_pay,google_pay' | split: ',' %}
+                {% for type in payment_icons_available %}
+                  {% if shop.enabled_payment_types contains type %}
+                    {%- assign icon_name = type | prepend: 'fa-' -%}
+                    <li class="column">
+                      <i class="fab {{ icon_name | replace: 'google_pay', 'google' | replace: 'american_express', 'cc-amex' | replace: 'apple_pay', 'cc-apple-pay' | replace: 'apple_pay', 'cc-apple-pay' | replace: 'master', 'cc-mastercard' | replace: 'visa', 'cc-visa' | replace: 'paypal', 'cc-paypal' }} fa-2x"></i>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+{% else %}
+  {% comment %}
+    Cart empty state
+  {% endcomment %}
+  <section class="hero is-medium">
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="heading is-size-3 has-text-weight-bold is-uppercase">{{ 'cart.general.title' | t }}</h1>
+
+        <div class="supports-cookies">
+          <p>{{ 'cart.general.empty' | t }}</p>
+          <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+        </div>
+
+        <div class="supports-no-cookies">
+          <p>{{ 'cart.general.cookies_required' | t }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endif %}

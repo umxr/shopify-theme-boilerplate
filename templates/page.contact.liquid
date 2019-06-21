@@ -1,0 +1,85 @@
+<section class="section">
+  <div class="content container">
+    <div class="columns">
+      <div class="column is-half">
+        <h1>{{ page.title }}</h1>
+        {{ page.content }}
+      </div>
+      <div class="column is-half">
+        {% form 'contact' %}
+          {% if form.posted_successfully? %}
+          <div class="notification">
+            <p>{{ 'contact.form.post_success' | t }}</p>
+          </div>
+          {% endif %}
+
+          {% if form.errors %}
+          <div class="notification is-danger">
+            {{ form.errors | default_errors }}
+          </div>
+          {% endif %}
+          
+          <div class="field">
+            <label for="ContactFormName" class="label">{{ 'contact.form.name' | t }}</label>
+            <div class="control">
+              <input type="text"
+                name="contact[name]"
+                id="ContactFormName"
+                class="input" 
+                placeholder="{{ 'contact.form.name' | t }}"
+                value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ContactFormEmail" class="label">{{ 'contact.form.email' | t }}</label>
+            <div class="control">
+              <input type="email"
+                name="contact[email]"
+                id="ContactFormEmail"
+                class="input" 
+                placeholder="{{ 'contact.form.email' | t }}"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                spellcheck="false"
+                autocomplete="off"
+                autocapitalize="off">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ContactFormPhone" class="label">{{ 'contact.form.phone' | t }}</label>
+            <div class="control">
+              <input type="tel"
+                name="contact[phone]"
+                id="ContactFormPhone"
+                class="input" 
+                placeholder="{{ 'contact.form.phone' | t }}"
+                value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ContactFormMessage" class="label">{{ 'contact.form.message' | t }}</label>
+            <div class="control">
+              <textarea rows="10"
+                name="contact[body]"
+                id="ContactFormMessage"
+                class="textarea"
+                placeholder="{{ 'contact.form.message' | t }}">
+                {%- if form.body -%}
+                  {{ form.body }}
+                {%- endif -%}
+              </textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <input type="submit" class="button is-primary" value="{{ 'contact.form.send' | t }}">
+            </div>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</section>

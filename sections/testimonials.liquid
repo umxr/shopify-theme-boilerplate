@@ -1,0 +1,117 @@
+<section class="section" data-section-id="{{ section.id }}" data-section-type="testimonial-section">
+  <div class="container">
+    {%- if section.settings.testimonial_title.size > 0 -%}
+      <div class="content">
+        <h2>{{section.settings.testimonial_title}}</h3>
+      </div>
+    {%- endif -%}
+
+    <div class="testimonial-slider" data-banner-dots="{{section.settings.dots_enabled}}" data-banner-arrows="{{section.settings.arrows_enabled}}">
+      {%- for block in section.blocks -%}
+        <div class="column" {{ block.shopify_attributes }}>
+          <div class="card">
+            <div class="card-content">
+              <div class="content">
+                {{ block.settings.testimonial_content }}
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <div class="card-footer-item">
+                <span class="title is-7">{{ block.settings.testimonial_name }}</span>
+              </div>
+
+              <div class="card-footer-item">
+                {% assign counter = 1 %}
+                {%- for rating in (1..5) -%}
+                  {% capture counter %}{{ forloop.index }}{% endcapture %}
+
+                  <span class="icon has-text-warning">
+                    {% assign counter = counter | plus: 0 %}
+                    {%- if counter <= block.settings.testimonial_rating -%}
+                      <i class="fas fa-star"></i>
+                    {%- else -%}
+                      <i class="far fa-star"></i>
+                    {%- endif -%}
+                  </span>
+                {%- endfor -%}
+              </div>
+
+              {%- if block.settings.testimonial_image -%}
+                <div class="card-footer-item">
+                  <div class="image is-64x64">
+                    <img  src="{{ block.settings.testimonial_image | img_url: '128x128', crop: 'center' }}"
+                          srcset="{{ block.settings.testimonial_image | img_url: '128x128', crop: 'center'  }} 1x, {{ block.settings.testimonial_image | img_url: '128x128', crop: 'center', scale: 2 }} 2x"
+                          alt="{{ block.settings.testimonial_image.alt | default: shop.name }}"
+                          class="is-rounded" />
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "testimonial_title",
+      "label": "Testimonials Section Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "dots_enabled",
+      "label": "Enable banner dots?"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_enabled",
+      "label": "Enable banner arrows?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "testimonial_name",
+          "label": "Testimonial Name"
+        },
+        {
+          "type": "richtext",
+          "id": "testimonial_content",
+          "label": "Testimonial Content"
+        },
+        {
+          "type": "range",
+          "id": "testimonial_rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Testimonial Rating",
+          "default": 0
+        },
+        {
+          "type": "image_picker",
+          "id": "testimonial_image",
+          "label": "Testimonial Portrait"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial List",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

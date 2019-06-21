@@ -1,0 +1,177 @@
+<section class="section">
+  <div class="container">
+    <div data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true" itemscope itemtype="http://schema.org/Product">
+      {%- assign current_variant = product.selected_or_first_available_variant -%}
+      {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+      <meta itemprop="name" content="{{ product.title }}{% unless product.has_only_default_variant %} - {{ current_variant.title }}{% endunless %}"/>
+      <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}"/>
+      <meta itemprop="brand" content="{{ product.vendor }}"/>
+      <meta itemprop="image" content="https:{{ featured_image | img_url: "1024x1024" }}"/>
+      <meta itemprop="description" content="{{ product.description | strip_html | escape }}"/>
+      <meta itemprop="sku" content="{{ current_variant.sku | strip_html | escape }}"/>
+
+      <div class="columns is-multiline">
+        <div class="column is-6">
+          <img src="{{ featured_image | img_url: '480x480' }}" alt="{{ featured_image.alt | escape }}" data-product-featured-image>
+          <div class="columns is-multiline is-vcentered">
+            {% for image in product.images %}
+            <div class="column">
+              <a href="{{ image.src | img_url: '480x480' }}" data-product-single-thumbnail class="is-inline-block">
+                <img src="{{ image.src | img_url: '160x160' }}" alt="{{ image.alt | escape }}">
+              </a>
+            </div>
+            {% endfor %}
+
+            {% if product.metafields.c_f.product_video != blank and product.metafields.c_f.product_video != 'none' %}
+            <div class="column">
+              <a class="modal-trigger video-trigger is-inline-block" data-target="#product-video">
+                <span class="icon is-inline-block">
+                  <i class="fab fa-youtube fa-4x"></i>
+                </span>
+              </a>
+
+              <div class="modal video" id="product-video">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                  {% if product.metafields.c_f.product_video contains '?v=' %}
+                    {% assign videoID = product.metafields.c_f.product_video | split: '?v=' | last %}
+                    <iframe width="560" height="315" src="//www.youtube.com/embed/{{ videoID }}" frameborder="0" allowfullscreen></iframe>
+                  {% else %}
+                    <iframe width="560" height="315" src="{{ product.metafields.c_f.product_video }}" frameborder="0" allowfullscreen></iframe>
+                  {% endif %}
+                </div>
+                <button class="modal-close is-large" aria-label="close"></button>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="column is-6">
+          <div class="content">
+            <h1 class="title">{{ product.title }}</h1>
+            <p class="subtitle">{{ product.vendor }}</p>
+
+            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+              <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+              <meta itemprop="price" content="{{ current_variant.price | divided_by: 100.00 }}">
+              <link itemprop="availability" href="http://schema.org/{% if current_variant.available %}InStock{% else %}OutOfStock{% endif %}">
+              <meta itemprop="url" content="{{ shop.url }}{{ current_variant.url }}"/>
+
+              <form action="/cart/add" method="post" enctype="multipart/form-data">
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    <div class="field selector-wrapper js">
+                      <label for="SingleOptionSelector-{{ forloop.index0 }}" class="label">
+                        {{ option.name }}
+                      </label>
+                      <div class="control">
+                        <div class="select is-fullwidth">
+                          <select
+                            id="SingleOptionSelector-{{ forloop.index0 }}"
+                            data-single-option-selector
+                            data-index="option{{ option.position }}">
+                            {% for value in option.values %}
+                              <option
+                                value="{{ value | escape }}"
+                                {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                  {{ value }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% endunless %}
+
+                <div class="field selector-wrapper no-js">
+                  <div class="select is-fullwidth">
+                    <select name="id" data-product-select>
+                      {% for variant in product.variants %}
+                        <option
+                          {% if variant == current_variant %}selected="selected"{% endif %}
+                          {% unless variant.available %}disabled="disabled"{% endunless %}
+                          value="{{ variant.id }}">
+                            {{ variant.title }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="Quantity" class="label">{{ 'products.product.quantity' | t }}</label>
+                  <div class="control">
+                    <input type="number" id="Quantity" class="input" name="quantity" value="1" min="1">
+                  </div>
+                </div>
+
+                <p data-price-wrapper>
+                  <span data-product-price>
+                    {{ current_variant.price | money }}
+                  </span>
+
+                  {% if product.compare_at_price_max > product.price %}
+                    <span class="is-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+                    <s data-compare-price>
+                      {% if current_variant.compare_at_price > current_variant.price %}
+                        {{ current_variant.compare_at_price | money }}
+                      {% endif %}
+                    </s>
+                  {% endif %}
+                </p>
+
+                <div class="field content">
+                  <p class="control">
+                    <button
+                      type="submit"
+                      name="add"
+                      class="button is-primary"
+                      data-add-to-cart
+                      {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                        <span data-add-to-cart-text>
+                          {% if current_variant.available %}
+                            {{ 'products.product.add_to_cart' | t }}
+                          {% else %}
+                            {{ 'products.product.sold_out' | t }}
+                          {% endif %}
+                        </span>
+                    </button>
+                  </p>
+                </div>
+              </form>
+
+              {{ product.description }}
+
+              {% if section.settings.show_share_buttons %}
+                {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+              {% endif %}
+
+              {% unless product == empty %}
+                <script type="application/json" data-product-json>
+                  {{ product | json }}
+                </script>
+              {% endunless %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Product pages",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_share_buttons",
+        "label": "Show social sharing buttons",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

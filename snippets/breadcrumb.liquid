@@ -1,0 +1,75 @@
+{% unless template == 'index' or template == 'cart' or template == 'list-collections' %}
+<section class="section is-small">
+  <div class="container">
+    <nav class="breadcrumb is-small" role="navigation" aria-label="breadcrumbs">
+      <ul>
+        <li>
+          <a href="/" title="Home">Home</a>
+        </li>
+
+        {% if template contains 'page' %}
+          <li class="is-active">
+            <a href="#">{{ page.title }}</a>
+          </li>
+
+        {% elsif template contains 'product' %}
+          {% if collection.url %}
+            <li>
+              {{ collection.title | link_to: collection.url }}
+            </li>
+          {% endif %}
+
+          <li class="is-active">
+            <a href="#">{{ product.title }}</a>
+          </li>
+
+        {% elsif template contains 'collection' and collection.handle %}
+          {% if current_tags %}
+            {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+            <li>
+              {{ collection.title | link_to: url }}
+            </li>
+
+            <li class="is-active">
+              <a href="#">{{ current_tags | join: " + " }}</a>
+            </li>
+          {% else %}
+            <li class="is-active">
+              <a href="#">{{ collection.title }}</a>
+            </li>
+          {% endif %}
+
+        {% elsif template == 'blog' %}
+          {% if current_tags %}
+            <li>
+              {{ blog.title | link_to: blog.url }}
+            </li>
+
+            <li class="is-active">
+              <a href="#">{{ current_tags | join: " + " }}</a>
+            </li>
+          {% else %}
+          <li class="is-active">
+            <a href="#">{{ blog.title }}</a>
+          </li>
+          {% endif %}
+
+        {% elsif template == 'article' %}
+          <li>
+            {{ blog.title | link_to: blog.url }}
+          </li>
+
+          <li class="is-active">
+            <a href="#">{{ article.title }}</a>
+          </li>
+
+        {% else %}
+          <li class="is-active">
+            <a href="#">{{ page_title }}</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</section>
+{% endunless %}

@@ -1,0 +1,44 @@
+<section class="section">
+  <div class="container">
+    {% if section.settings.title != blank %}
+    <div class="content">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+    {% endif %}
+
+    {%- assign collection = collections[section.settings.collection] -%}
+    <div class="columns">
+      {% for product in collection.products limit: 6 %}
+      <div class="column">
+        {%- include 'product-list-item' -%}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "Collection"
+      }
+    ]
+  }
+
+{% endschema %}

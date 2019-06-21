@@ -1,0 +1,51 @@
+{% for block in section.blocks %}
+  {% assign hreflangurl = block.settings.website | append: request.path  %}
+  {%- if template.name == 'product' and product.metafields.hreflang[block.settings.hreflang] -%}
+    {% assign hreflangurl = product.metafields.hreflang[block.settings.hreflang] %}
+  {%- elsif template.name == 'collection' and collection.metafields.hreflang[block.settings.hreflang] -%}
+    {% assign hreflangurl = collection.metafields.hreflang[block.settings.hreflang] %}
+  {%- elsif template.name == 'article' and article.metafields.hreflang[block.settings.hreflang] -%}
+    {% assign hreflangurl = article.metafields.hreflang[block.settings.hreflang] %}
+  {%- elsif template.name == 'page' and page.metafields.hreflang[block.settings.hreflang] -%}
+    {% assign hreflangurl = page.metafields.hreflang[block.settings.hreflang] %}
+  {%- elsif template.name == 'blog' and blog.metafields.hreflang[block.settings.hreflang] -%}
+    {% assign hreflangurl = blog.metafields.hreflang[block.settings.hreflang] %}
+  {%- endif -%}
+  <link rel="alternate" href="{{ hreflangurl }}" hreflang="{{ block.settings.hreflang }}"/>
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Href Lang",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "These settings are used to configure the presence of any international sites. You do not need to add the current site as a site here."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "website",
+        "name": "Website",
+        "settings": [
+          {
+            "label": "Hreflang",
+            "id": "hreflang",
+            "type": "text",
+            "info": "e.g. en, en-gb, de-de – where the first part is the language target, the second is the country, using ISO codes" 
+          },
+          {
+            "label": "Website URL",
+            "id": "website",
+            "type": "text",
+            "info": "Root domain of the international site, with https:// and no trailing slash."
+          },
+          {
+            "type": "paragraph",
+            "content": "Hreflang tags will be automatically generated with the same URL. For example, if the current site is www.domain.com and the site here is fr.domain.com then on the \/about-us page, the hreflang tag will point to fr.domain.com\/about-us. If you need to translate a URL, then provide a metafield on the page with the namespace hreflang, the key as the hreflang target, and the value as the full translated URL."
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

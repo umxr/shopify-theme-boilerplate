@@ -1,0 +1,128 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section">
+  <header role="banner">
+    <nav class="navbar" role="navigation">
+      <div class="navbar-brand">
+        <a href="/" itemprop="url" class="navbar-item site-logo{% if section.settings.logo != blank %} site-header__logo-image{% endif %}">
+          {% if section.settings.logo != blank %}
+            {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
+            <img src="{{ section.settings.logo | img_url: image_size }}"
+                 srcset="{{ section.settings.logo | img_url: image_size }} 1x, {{ section.settings.logo | img_url: image_size, scale: 2 }} 2x"
+                 alt="{{ section.settings.logo.alt | default: shop.name }}"
+                 itemprop="logo">
+          {% else %}
+            {{ shop.name }}
+          {% endif %}
+        </a>
+
+        <div class="navbar-burger burger" data-target="navMenubd-example">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div id="navMenubd-example" class="navbar-menu">
+        <div class="navbar-start">
+          {% for link in linklists[section.settings.main_linklist].links %}
+            {%- assign child_list_handle = link.title | handleize -%}
+            {% if menus[child_list_handle].links != blank %}
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a href="{{ link.url }}" class="navbar-link {% if link.active %}is-active{% endif %}">
+                  {{ link.title }}
+                </a>
+
+                <div class="navbar-dropdown">
+                  {% for childlink in menus[child_list_handle].links %}
+                    <a href="{{ childlink.url }}" class="navbar-item {% if childlink.active %}is-active{% endif %}">
+                      {{ childlink.title | escape }}
+                    </a>
+                  {% endfor %}
+                </div>
+              </div>
+            {% else %}
+              <a href="{{ link.url }}" class="navbar-item {% if link.active %}is-active{% endif %}">
+                {{ link.title }}
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        <div class="navbar-end">
+          {% if shop.customer_accounts_enabled %}
+            <a href="/account" class="navbar-item">
+              {% if customer.first_name != blank %}
+                {{ 'layout.customer.logged_in_as_html' | t: first_name: customer.first_name }}
+              {% else %}
+                {{ 'layout.customer.account' | t }}
+              {% endif %}
+            </a>
+          {% endif %}
+
+          {% if customer.first_name != blank %}
+          {{ 'layout.customer.log_out' | t | customer_logout_link | replace: 'id=', 'class="navbar-item" id=' }}
+          {% endif %}
+
+          <div class="navbar-item">
+            <form action="/search" method="get" role="search">
+              <div class="field has-addons">
+                <div class="control">
+                  <input class="input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+                </div>
+                
+                <div class="control">
+                  <button type="submit" class="button is-primary">
+                    {{ 'general.search.submit' | t }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="navbar-item">
+            <p class="control">
+              <a class="button is-primary" href="/cart">
+                <span class="icon">
+                  <i class="fas fa-shopping-cart"></i>
+                </span>
+
+                <span>
+                  {{ 'layout.cart.title' | t }}
+                  ({{ cart.item_count }} {{ 'layout.cart.items_count' | t: count: cart.item_count }})
+                </span>
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+</div>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 50,
+        "max": 450,
+        "step": 10,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 250
+      },
+      {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+      }
+    ]
+  }
+{% endschema %}

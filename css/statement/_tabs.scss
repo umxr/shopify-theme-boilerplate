@@ -1,0 +1,23 @@
+.custom-tabs.tabs {
+  ul {
+    width: 100%;
+  }
+  
+  li {
+    @include from($tablet){
+      order: -1;
+    }
+  }
+
+  div {
+    display: none;
+
+    @include from($tablet){
+      order: 0;
+    }
+
+    &:first-of-type {
+      display: block;
+    }
+  }
+}

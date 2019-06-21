@@ -1,0 +1,87 @@
+{%- case section.settings.background -%}
+  {%- when 'colour' -%}
+    {% assign background = 'background-color: ' | append: section.settings.colour %}
+
+  {%- when 'image' -%}
+    {% assign image = section.settings.image | img_url: '1980x' %}
+    {% assign classes = 'has-bg-repeat-none has-bg-position-center has-bg-size-cover' %}
+    {% assign background = 'background-image: url(' | append: image | append: ')' %}
+{%- endcase -%}
+
+<section class="section {{classes}}" style="{{background}}">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="content has-text-{{section.settings.alignment}}">
+          {{section.settings.content}}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Richtext",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Background",
+      "options": [
+        {
+          "value": "colour",
+          "label": "Colour"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        }
+      ],
+      "default": "colour"
+    },
+    {
+      "type": "color",
+      "id": "colour",
+      "label": "Background Colour",
+      "default": "#DDDDDD"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "centered",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+       ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Richtext",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

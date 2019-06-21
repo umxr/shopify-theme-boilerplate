@@ -1,0 +1,265 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "sections": {
+        "collection-list": {
+          "type": "collection-list",
+          "blocks": {
+            "collection-list-0": {
+              "type": "collection"
+            },
+            "collection-list-1": {
+              "type": "collection"
+            },
+            "collection-list-2": {
+              "type": "collection"
+            }
+          },
+          "block_order": [
+            "collection-list-0",
+            "collection-list-1",
+            "collection-list-2"
+          ]
+        },
+        "featured-collection": {
+          "type": "featured-collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        },
+        "featured-product": {
+          "type": "featured-product"
+        },
+        "tiles-section": {
+          "type": "tiles",
+          "blocks": {
+            "tile-open-0": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": false,
+                "col_width": 0
+              }
+            },
+            "tile-open-1": {
+              "type": "column_start",
+              "settings": {
+                "vertical": true,
+                "parent": false,
+                "col_width": 0
+              }
+            },
+            "tile-open-2": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": false,
+                "col_width": 0
+              }
+            },
+            "tile-open-3": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-0": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": ""
+              }
+            },
+            "tile-close-3": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-open-4": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-1": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": ""
+              }
+            },
+            "tile-close-4": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-close-2": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-open-5": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-2": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": "shopify:\/\/shop_images\/mens-fashion-watch.jpg"
+              }
+            },
+            "tile-close-5": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-close-1": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-open-6": {
+              "type": "column_start",
+              "settings": {
+                "vertical": true,
+                "parent": false,
+                "col_width": 0
+              }
+            },
+            "tile-open-7": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-4": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": ""
+              }
+            },
+            "tile-close-7": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-open-8": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": false,
+                "col_width": 0
+              }
+            },
+            "tile-open-9": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-5": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": ""
+              }
+            },
+            "tile-close-9": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-open-10": {
+              "type": "column_start",
+              "settings": {
+                "vertical": false,
+                "parent": true,
+                "col_width": 0
+              }
+            },
+            "tile-6": {
+              "type": "tile_text",
+              "settings": {
+                "tile_title": "Title",
+                "tile_content": "<p>Content<\/p>",
+                "tile_image": ""
+              }
+            },
+            "tile-close-10": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-close-6": {
+              "type": "column_end",
+              "settings": {
+              }
+            },
+            "tile-close-0": {
+              "type": "column_end",
+              "settings": {
+              }
+            }
+          },
+          "block_order": [
+            "tile-open-0",
+            "tile-open-1",
+            "tile-open-2",
+            "tile-open-3",
+            "tile-0",
+            "tile-close-3",
+            "tile-open-4",
+            "tile-1",
+            "tile-close-4",
+            "tile-close-2",
+            "tile-open-5",
+            "tile-2",
+            "tile-close-5",
+            "tile-close-1",
+            "tile-open-6",
+            "tile-open-7",
+            "tile-4",
+            "tile-close-7",
+            "tile-open-8",
+            "tile-open-9",
+            "tile-5",
+            "tile-close-9",
+            "tile-open-10",
+            "tile-6",
+            "tile-close-10",
+            "tile-close-6",
+            "tile-close-0"
+          ],
+          "settings": {
+          }
+        }
+      },
+      "content_for_index": [
+        "collection-list",
+        "featured-collection",
+        "featured-product",
+        "tiles-section"
+      ]
+    }
+  }
+}

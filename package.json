@@ -1,0 +1,50 @@
+{
+  "name": "shopify-framework",
+  "version": "1.0.0",
+  "description": "Download, set up config.yml for Themekit, and you're off.",
+  "main": "gulpfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
+    "babel-preset-env": "^1.7.0",
+    "concurrently": "^4.1.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssimport": "^6.0.1",
+    "gulp-merge": "^0.1.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-uglify": "^3.0.1",
+    "install": "^0.12.2",
+    "natives": "^1.1.6",
+    "npm": "^6.4.1"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "Firefox ESR",
+    "not dead",
+    "IE 10",
+    "iOS 7"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently 'theme watch' 'gulp'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/statementagency/shopify-framework.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/statementagency/shopify-framework/issues"
+  },
+  "author": "Statement",
+  "license": "ISC"
+}

@@ -1,0 +1,64 @@
+<section data-section-id="{{ section.id }}" data-section-type="usps-section" class="section is-small">
+  <div class="container">
+    <div class="columns is-vcentered is-centered usps-wrapper">
+      {%- for block in section.blocks -%}
+        <div class="column" {{ block.shopify_attributes }}>
+          <div class="columns is-centered is-mobile">
+            {%- if block.settings.usp_icon -%}
+              <div class="column is-narrow">
+                <i class="fa-{{ block.settings.usp_icon }}"></i>
+              </div>
+            {%- endif -%}
+
+            <div class="column is-narrow">
+              {%- if block.settings.usp_url -%}
+                <a href="{{ block.settings.usp_url }}" title="{{ block.settings.usp_text }}">
+              {%- endif -%}
+                {{ block.settings.usp_text }}
+              {%- if block.settings.usp_url -%}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Usps",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "Usp",
+      "settings": [
+        {
+          "type": "text",
+          "id": "usp_icon",
+          "label": "Usp Icon",
+          "info": "Enter icon code after fa-"
+        },
+        {
+          "type": "text",
+          "id": "usp_text",
+          "label": "Usp Text"
+        },
+        {
+          "type": "url",
+          "id": "usp_url",
+          "label": "Usp URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Usps",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

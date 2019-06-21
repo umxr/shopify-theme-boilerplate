@@ -1,0 +1,19 @@
+{% comment %}
+  This page represents the /collections and /products pages.
+{% endcomment %}
+
+<section class="section">
+  <div class="container">
+    <h1>{{ page_title }}</h1>
+    
+    <div class="columns">
+      {% for collection in collections %}
+        {% unless collection.handle == 'frontpage' %}
+          <div class="column">
+            {%- include 'collection-list-item' -%}
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+  </div>
+</section>

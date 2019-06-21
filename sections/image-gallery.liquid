@@ -1,0 +1,81 @@
+<section class="section {% if section.settings.full_width == true %}has-padding-left-none has-padding-right-none{% endif %}" data-section-id="{{ section.id }}" data-section-type="image-slider-section">
+  {%- if section.settings.full_width == false -%}<div class="container">{%- endif -%}
+
+  {%- if section.settings.full_width == true -%}<div class="container">{%- endif -%}
+    <div class="content">
+      <h2>{{ section.settings.title }}</h2>
+    </div>
+  {%- if section.settings.full_width == true -%}</div>{%- endif -%}
+
+    <div class="image-slider">
+      {%- for block in section.blocks -%}
+        <div class="image-wrapper" {{ block.shopify_attributes }}>
+          <a href="#" class="image is-1by1 modal-trigger" data-target="#image-{{forloop.index}}">
+            <img  src="{{ block.settings.image_image | img_url: '500x500', crop: 'center' }}"
+                  srcset="{{ block.settings.image_image | img_url: '500x500', crop: 'center' }} 1x, {{ block.settings.image_image | img_url: '500x500', crop: 'center', scale: 2 }} 2x"
+                  alt="{{ block.settings.image_image.alt | default: shop.name }}"/>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  {%- if section.settings.full_width == false -%}</div>{%- endif -%}
+
+  <div class="image-modals">
+    {%- for block in section.blocks -%}
+      <div class="modal" id="image-{{forloop.index}}">
+        <div class="modal-background"></div>
+
+        <div class="modal-content">
+          <img  src="{{ block.settings.image_image | img_url: '1000x1000', crop: 'center' }}"
+                srcset="{{ block.settings.image_image | img_url: '1000x1000', crop: 'center' }} 1x, {{ block.settings.image_image | img_url: '1000x1000', crop: 'center', scale: 2 }} 2x"
+                alt="{{ block.settings.image_image.alt | default: shop.name }}"/>
+        </div>
+
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "text",
+          "id": "image_text",
+          "label": "Image Text"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Gallery",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

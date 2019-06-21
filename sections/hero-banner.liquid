@@ -1,0 +1,109 @@
+<section class="hero-banner" data-section-id="{{ section.id }}" data-section-type="hero-banner-section">
+  <div class="banner-wrapper" data-banner-dots="{{section.settings.dots_enabled}}" data-banner-arrows="{{section.settings.arrows_enabled}}">
+    {% for block in section.blocks %}
+      <div class="banner" {{ block.shopify_attributes }}>
+        <div class="hero is-medium">
+          <div class="banner__image">
+            <picture>
+              {%- if block.settings.banner_mobile_image -%}
+                <source media="(max-width: 768px)" srcset="{{ block.settings.banner_mobile_image | img_url: '768x400', crop: 'center' }} 1x, {{ block.settings.banner_mobile_image | img_url: '768x400', crop: 'center', scale: 2 }} 2x">
+              {%- endif -%}
+
+              <img  src="{{ block.settings.banner_desktop_image | img_url: '1980x500', crop: 'center' }}"
+                    srcset="{{ block.settings.banner_desktop_image | img_url: '1980x500', crop: 'center'  }} 1x, {{ block.settings.banner_desktop_image | img_url: '1980x500', crop: 'center', scale: 2 }} 2x"
+                    alt="{{ block.settings.banner_desktop_image.alt | default: shop.name }}"/>
+            </picture>
+          </div>
+
+          <div class="banner__box hero-body">
+            <div class="container">
+              <div class="columns is-marginless">
+                <div class="column is-half is-paddingless">
+                  {%- if block.settings.title -%}
+                    <h2 class="banner__box-title title is-h2">
+                      {{ block.settings.title }}
+                    </h2>
+                  {%- endif -%}
+
+                  {%- if block.settings.content -%}
+                    <div class="banner__box-content">
+                      {{ block.settings.content }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.label.size > 0 and block.settings.link -%}
+                    <a href="{{ block.settings.link }}" class="banner__box-button button is-primary">
+                      <span>{{ block.settings.label }}</span>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "dots_enabled",
+      "label": "Enable banner dots?"
+    },
+    {
+      "type": "checkbox",
+      "id": "arrows_enabled",
+      "label": "Enable banner arrows?"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Banner Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Banner Content"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Banner Button Link"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Banner Button Label"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_desktop_image",
+          "label": "Desktop Banner Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_mobile_image",
+          "label": "Mobile Banner Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}
