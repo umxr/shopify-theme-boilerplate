@@ -1,7 +1,6 @@
-window.slate = window.slate || {};
-window.theme = window.theme || {};
+const { slate = {}, theme = {} } = window;
 
-/*================ Slate ================*/
+/*= =============== Slate ================ */
 /**
  * A11y Helpers
  * -----------------------------------------------------------------------------
@@ -13,7 +12,6 @@ window.theme = window.theme || {};
  */
 
 slate.a11y = {
-
   /**
    * For use when focus shifts to a container rather than a link
    * eg for In-page links, after scroll, focus shifts to content area so that
@@ -21,17 +19,19 @@ slate.a11y = {
    *
    * @param {JQuery} $element - The element to be acted upon
    */
-  pageLinkFocus: function ($element) {
-    var focusClass = 'js-focus-hidden';
+  pageLinkFocus($element) {
+    const focusClass = 'js-focus-hidden';
 
-    $element.first()
+    $element
+      .first()
       .attr('tabIndex', '-1')
       .focus()
       .addClass(focusClass)
       .one('blur', callback);
 
     function callback() {
-      $element.first()
+      $element
+        .first()
         .removeClass(focusClass)
         .removeAttr('tabindex');
     }
@@ -40,8 +40,8 @@ slate.a11y = {
   /**
    * If there's a hash in the url, focus the appropriate element
    */
-  focusHash: function () {
-    var hash = window.location.hash;
+  focusHash() {
+    const { hash } = window.location;
 
     // is there a hash in the url? is it an element on the page?
     if (hash && document.getElementById(hash.slice(1))) {
@@ -52,10 +52,13 @@ slate.a11y = {
   /**
    * When an in-page (url w/hash) link is clicked, focus the appropriate element
    */
-  bindInPageLinks: function () {
-    $('a[href*=#]').on('click', function (evt) {
-      this.pageLinkFocus($(evt.currentTarget.hash));
-    }.bind(this));
+  bindInPageLinks() {
+    $('a[href*=#]').on(
+      'click',
+      function(evt) {
+        this.pageLinkFocus($(evt.currentTarget.hash));
+      }.bind(this)
+    );
   },
 
   /**
@@ -66,9 +69,9 @@ slate.a11y = {
    * @param {jQuery} options.$elementToFocus - Element to be focused when focus leaves container
    * @param {string} options.namespace - Namespace used for new focus event handler
    */
-  trapFocus: function (options) {
-    var eventName = options.namespace
-      ? 'focusin.' + options.namespace
+  trapFocus(options) {
+    const eventName = options.namespace
+      ? `focusin.${options.namespace}`
       : 'focusin';
 
     if (!options.$elementToFocus) {
@@ -78,8 +81,11 @@ slate.a11y = {
     options.$container.attr('tabindex', '-1');
     options.$elementToFocus.focus();
 
-    $(document).on(eventName, function (evt) {
-      if (options.$container[0] !== evt.target && !options.$container.has(evt.target).length) {
+    $(document).on(eventName, function(evt) {
+      if (
+        options.$container[0] !== evt.target &&
+        !options.$container.has(evt.target).length
+      ) {
         options.$container.focus();
       }
     });
@@ -92,9 +98,9 @@ slate.a11y = {
    * @param {jQuery} options.$container - Container to trap focus within
    * @param {string} options.namespace - Namespace used for new focus event handler
    */
-  removeTrapFocus: function (options) {
-    var eventName = options.namespace
-      ? 'focusin.' + options.namespace
+  removeTrapFocus(options) {
+    const eventName = options.namespace
+      ? `focusin.${options.namespace}`
       : 'focusin';
 
     if (options.$container && options.$container.length) {
@@ -113,21 +119,19 @@ slate.a11y = {
    *  }
    * });
    */
-  keyOrClick: function (event) {
+  keyOrClick(event) {
     if (event.type === 'click') {
       return true;
     }
-    else if (event.type === 'keypress') {
-      var code = event.charCode || event.keyCode;
-      if ((code === 32) || (code === 13)) {
+    if (event.type === 'keypress') {
+      const code = event.charCode || event.keyCode;
+      if (code === 32 || code === 13) {
         return true;
       }
-    }
-    else {
+    } else {
       return false;
     }
-  }
-
+  },
 };
 
 /**
@@ -139,20 +143,19 @@ slate.a11y = {
  */
 
 slate.cart = {
-
   /**
    * Browser cookies are required to use the cart. This function checks if
    * cookies are enabled in the browser.
    */
-  cookiesEnabled: function () {
-    var cookieEnabled = navigator.cookieEnabled;
+  cookiesEnabled() {
+    let { cookieEnabled } = navigator;
 
     if (!cookieEnabled) {
       document.cookie = 'testcookie';
-      cookieEnabled = (document.cookie.indexOf('testcookie') !== -1);
+      cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
     }
     return cookieEnabled;
-  }
+  },
 };
 
 /**
@@ -164,7 +167,6 @@ slate.cart = {
  */
 
 slate.utils = {
-
   /**
    * Return an object from an array of objects that matches the provided key and value
    *
@@ -172,8 +174,8 @@ slate.utils = {
    * @param {string} key - Key to match the value against
    * @param {string} value - Value to get match of
    */
-  findInstance: function (array, key, value) {
-    for (var i = 0; i < array.length; i++) {
+  findInstance(array, key, value) {
+    for (let i = 0; i < array.length; i++) {
       if (array[i][key] === value) {
         return array[i];
       }
@@ -187,8 +189,8 @@ slate.utils = {
    * @param {string} key - Key to match the value against
    * @param {string} value - Value to get match of
    */
-  removeInstance: function (array, key, value) {
-    var i = array.length;
+  removeInstance(array, key, value) {
+    let i = array.length;
     while (i--) {
       if (array[i][key] === value) {
         array.splice(i, 1);
@@ -206,14 +208,14 @@ slate.utils = {
    *
    * @param {array} array
    */
-  compact: function (array) {
-    var index = -1;
-    var length = array == null ? 0 : array.length;
-    var resIndex = 0;
-    var result = [];
+  compact(array) {
+    let index = -1;
+    const length = array == null ? 0 : array.length;
+    let resIndex = 0;
+    const result = [];
 
     while (++index < length) {
-      var value = array[index];
+      const value = array[index];
       if (value) {
         result[resIndex++] = value;
       }
@@ -232,9 +234,9 @@ slate.utils = {
    * @param {*} defaultValue - Default value
    * @returns {*} - Returns the resolved value
    */
-  defaultTo: function (value, defaultValue) {
-    return (value == null || value !== value) ? defaultValue : value
-  }
+  defaultTo(value, defaultValue) {
+    return value == null || value !== value ? defaultValue : value;
+  },
 };
 
 /**
@@ -246,28 +248,29 @@ slate.utils = {
  */
 
 slate.rte = {
-
-  wrapTable: function () {
+  wrapTable() {
     $('.rte table').wrap('<div class="rte__table-wrapper"></div>');
   },
 
-  iframeReset: function () {
-    var $iframeVideo = $('.rte iframe[src*="youtube.com/embed"], .rte iframe[src*="player.vimeo"]');
-    var $iframeReset = $iframeVideo.add('.rte iframe#admin_bar_iframe');
+  iframeReset() {
+    const $iframeVideo = $(
+      '.rte iframe[src*="youtube.com/embed"], .rte iframe[src*="player.vimeo"]'
+    );
+    const $iframeReset = $iframeVideo.add('.rte iframe#admin_bar_iframe');
 
-    $iframeVideo.each(function () {
+    $iframeVideo.each(function() {
       // Add wrapper to make video responsive
       $(this).wrap('<div class="rte__video-wrapper"></div>');
     });
 
-    $iframeReset.each(function () {
+    $iframeReset.each(function() {
       // Re-set the src attribute on each iframe after page load
       // for Chrome's "incorrect iFrame content on 'back'" bug.
       // https://code.google.com/p/chromium/issues/detail?id=395791
       // Need to specifically target video and admin bar
       this.src = this.src;
     });
-  }
+  },
 };
 
 slate.Sections = function Sections() {
@@ -284,10 +287,10 @@ slate.Sections = function Sections() {
     .on('shopify:block:deselect', this._onBlockDeselect.bind(this));
 };
 slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
-  _createInstance: function (container, constructor) {
-    var $container = $(container);
-    var id = $container.attr('data-section-id');
-    var type = $container.attr('data-section-type');
+  _createInstance(container, constructor) {
+    const $container = $(container);
+    const id = $container.attr('data-section-id');
+    const type = $container.attr('data-section-type');
 
     constructor = constructor || this.constructors[type];
 
@@ -295,24 +298,28 @@ slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
       return;
     }
 
-    var instance = $.extend(new constructor(container), {
-      id: id,
-      type: type,
-      container: container
+    const instance = $.extend(new constructor(container), {
+      id,
+      type,
+      container,
     });
 
     this.instances.push(instance);
   },
 
-  _onSectionLoad: function (evt) {
-    var container = $('[data-section-id]', evt.target)[0];
+  _onSectionLoad(evt) {
+    const container = $('[data-section-id]', evt.target)[0];
     if (container) {
       this._createInstance(container);
     }
   },
 
-  _onSectionUnload: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onSectionUnload(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (!instance) {
       return;
@@ -322,56 +329,82 @@ slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
       instance.onUnload(evt);
     }
 
-    this.instances = slate.utils.removeInstance(this.instances, 'id', evt.detail.sectionId);
+    this.instances = slate.utils.removeInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
   },
 
-  _onSelect: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onSelect(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (instance && typeof instance.onSelect === 'function') {
       instance.onSelect(evt);
     }
   },
 
-  _onDeselect: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onDeselect(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (instance && typeof instance.onDeselect === 'function') {
       instance.onDeselect(evt);
     }
   },
 
-  _onReorder: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onReorder(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (instance && typeof instance.onReorder === 'function') {
       instance.onReorder(evt);
     }
   },
 
-  _onBlockSelect: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onBlockSelect(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (instance && typeof instance.onBlockSelect === 'function') {
       instance.onBlockSelect(evt);
     }
   },
 
-  _onBlockDeselect: function (evt) {
-    var instance = slate.utils.findInstance(this.instances, 'id', evt.detail.sectionId);
+  _onBlockDeselect(evt) {
+    const instance = slate.utils.findInstance(
+      this.instances,
+      'id',
+      evt.detail.sectionId
+    );
 
     if (instance && typeof instance.onBlockDeselect === 'function') {
       instance.onBlockDeselect(evt);
     }
   },
 
-  register: function (type, constructor) {
+  register(type, constructor) {
     this.constructors[type] = constructor;
 
-    $('[data-section-type=' + type + ']').each(function (index, container) {
-      this._createInstance(container, constructor);
-    }.bind(this));
-  }
+    $(`[data-section-type=${type}]`).each(
+      function(index, container) {
+        this._createInstance(container, constructor);
+      }.bind(this)
+    );
+  },
 });
 
 /**
@@ -384,8 +417,8 @@ slate.Sections.prototype = $.extend({}, slate.Sections.prototype, {
  *
  */
 
-slate.Currency = (function () {
-  var moneyFormat = '${{amount}}';
+slate.Currency = (function() {
+  const moneyFormat = '${{amount}}';
 
   /**
    * Format money values based on your shop currency settings
@@ -398,9 +431,9 @@ slate.Currency = (function () {
     if (typeof cents === 'string') {
       cents = cents.replace('.', '');
     }
-    var value = '';
-    var placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
-    var formatString = (format || moneyFormat);
+    let value = '';
+    const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+    const formatString = format || moneyFormat;
 
     function formatWithDelimiters(number, precision, thousands, decimal) {
       precision = slate.utils.defaultTo(precision, 2);
@@ -413,9 +446,12 @@ slate.Currency = (function () {
 
       number = (number / 100.0).toFixed(precision);
 
-      var parts = number.split('.');
-      var dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
-      var centsAmount = parts[1] ? (decimal + parts[1]) : '';
+      const parts = number.split('.');
+      const dollarsAmount = parts[0].replace(
+        /(\d)(?=(\d\d\d)+(?!\d))/g,
+        `$1${thousands}`
+      );
+      const centsAmount = parts[1] ? decimal + parts[1] : '';
 
       return dollarsAmount + centsAmount;
     }
@@ -445,7 +481,7 @@ slate.Currency = (function () {
   }
 
   return {
-    formatMoney: formatMoney
+    formatMoney,
   };
 })();
 
@@ -456,8 +492,7 @@ slate.Currency = (function () {
  *
  */
 
-slate.Image = (function () {
-
+slate.Image = (function() {
   /**
    * Preloads an image in memory and uses the browsers cache to store it until needed.
    *
@@ -470,8 +505,8 @@ slate.Image = (function () {
       images = [images];
     }
 
-    for (var i = 0; i < images.length; i++) {
-      var image = images[i];
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
       this.loadImage(this.getSizedImageUrl(image, size));
     }
   }
@@ -491,13 +526,14 @@ slate.Image = (function () {
    * @returns {null}
    */
   function imageSize(src) {
-    var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/);
+    const match = src.match(
+      /.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\.@]/
+    );
 
     if (match) {
       return match[1];
-    } else {
-      return null;
     }
+    return null;
   }
 
   /**
@@ -516,16 +552,17 @@ slate.Image = (function () {
       return this.removeProtocol(src);
     }
 
-    var match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
+    const match = src.match(
+      /\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i
+    );
 
     if (match) {
-      var prefix = src.split(match[0]);
-      var suffix = match[0];
+      const prefix = src.split(match[0]);
+      const suffix = match[0];
 
-      return this.removeProtocol(prefix[0] + '_' + size + suffix);
-    } else {
-      return null;
+      return this.removeProtocol(`${prefix[0]}_${size}${suffix}`);
     }
+    return null;
   }
 
   function removeProtocol(path) {
@@ -533,11 +570,11 @@ slate.Image = (function () {
   }
 
   return {
-    preload: preload,
-    loadImage: loadImage,
-    imageSize: imageSize,
-    getSizedImageUrl: getSizedImageUrl,
-    removeProtocol: removeProtocol
+    preload,
+    loadImage,
+    imageSize,
+    getSizedImageUrl,
+    removeProtocol,
   };
 })();
 
@@ -552,8 +589,7 @@ slate.Image = (function () {
  * @namespace variants
  */
 
-slate.Variants = (function () {
-
+slate.Variants = (function() {
   /**
    * Variant constructor
    *
@@ -567,39 +603,42 @@ slate.Variants = (function () {
     this.enableHistoryState = options.enableHistoryState;
     this.currentVariant = this._getVariantFromOptions();
 
-    $(this.singleOptionSelector, this.$container).on('change', this._onSelectChange.bind(this));
+    $(this.singleOptionSelector, this.$container).on(
+      'change',
+      this._onSelectChange.bind(this)
+    );
   }
 
   Variants.prototype = $.extend({}, Variants.prototype, {
-
     /**
      * Get the currently selected options from add-to-cart form. Works with all
      * form input elements.
      *
      * @return {array} options - Values of currently selected variants
      */
-    _getCurrentOptions: function () {
-      var currentOptions = $.map($(this.singleOptionSelector, this.$container), function (element) {
-        var $element = $(element);
-        var type = $element.attr('type');
-        var currentOption = {};
+    _getCurrentOptions() {
+      let currentOptions = $.map(
+        $(this.singleOptionSelector, this.$container),
+        function(element) {
+          const $element = $(element);
+          const type = $element.attr('type');
+          const currentOption = {};
 
-        if (type === 'radio' || type === 'checkbox') {
-          if ($element[0].checked) {
-            currentOption.value = $element.val();
-            currentOption.index = $element.data('index');
+          if (type === 'radio' || type === 'checkbox') {
+            if ($element[0].checked) {
+              currentOption.value = $element.val();
+              currentOption.index = $element.data('index');
 
-            return currentOption;
-          } else {
+              return currentOption;
+            }
             return false;
           }
-        } else {
           currentOption.value = $element.val();
           currentOption.index = $element.data('index');
 
           return currentOption;
         }
-      });
+      );
 
       // remove any unchecked input values if using radio buttons or checkboxes
       currentOptions = slate.utils.compact(currentOptions);
@@ -613,17 +652,17 @@ slate.Variants = (function () {
      * @param  {array} selectedValues - Values of variant inputs
      * @return {object || undefined} found - Variant object from product.variants
      */
-    _getVariantFromOptions: function () {
-      var selectedValues = this._getCurrentOptions();
-      var variants = this.product.variants;
-      var found = false;
+    _getVariantFromOptions() {
+      const selectedValues = this._getCurrentOptions();
+      const { variants } = this.product;
+      let found = false;
 
-      variants.forEach(function (variant) {
-        var satisfied = true;
+      variants.forEach(function(variant) {
+        let satisfied = true;
 
-        selectedValues.forEach(function (option) {
+        selectedValues.forEach(function(option) {
           if (satisfied) {
-            satisfied = (option.value === variant[option.index]);
+            satisfied = option.value === variant[option.index];
           }
         });
 
@@ -638,12 +677,12 @@ slate.Variants = (function () {
     /**
      * Event handler for when a variant input changes.
      */
-    _onSelectChange: function () {
-      var variant = this._getVariantFromOptions();
+    _onSelectChange() {
+      const variant = this._getVariantFromOptions();
 
       this.$container.trigger({
         type: 'variantChange',
-        variant: variant
+        variant,
       });
 
       if (!variant) {
@@ -666,17 +705,20 @@ slate.Variants = (function () {
      * @param  {object} variant - Currently selected variant
      * @return {event}  variantImageChange
      */
-    _updateImages: function (variant) {
-      var variantImage = variant.featured_image || {};
-      var currentVariantImage = this.currentVariant.featured_image || {};
+    _updateImages(variant) {
+      const variantImage = variant.featured_image || {};
+      const currentVariantImage = this.currentVariant.featured_image || {};
 
-      if (!variant.featured_image || variantImage.src === currentVariantImage.src) {
+      if (
+        !variant.featured_image ||
+        variantImage.src === currentVariantImage.src
+      ) {
         return;
       }
 
       this.$container.trigger({
         type: 'variantImageChange',
-        variant: variant
+        variant,
       });
     },
 
@@ -686,14 +728,17 @@ slate.Variants = (function () {
      * @param  {object} variant - Currently selected variant
      * @return {event} variantPriceChange
      */
-    _updatePrice: function (variant) {
-      if (variant.price === this.currentVariant.price && variant.compare_at_price === this.currentVariant.compare_at_price) {
+    _updatePrice(variant) {
+      if (
+        variant.price === this.currentVariant.price &&
+        variant.compare_at_price === this.currentVariant.compare_at_price
+      ) {
         return;
       }
 
       this.$container.trigger({
         type: 'variantPriceChange',
-        variant: variant
+        variant,
       });
     },
 
@@ -703,12 +748,14 @@ slate.Variants = (function () {
      * @param  {variant} variant - Currently selected variant
      * @return {k}         [description]
      */
-    _updateHistoryState: function (variant) {
+    _updateHistoryState(variant) {
       if (!history.replaceState || !variant) {
         return;
       }
 
-      var newurl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + variant.id;
+      const newurl = `${window.location.protocol}//${window.location.host}${
+        window.location.pathname
+      }?variant=${variant.id}`;
       window.history.replaceState({ path: newurl }, '', newurl);
     },
 
@@ -717,27 +764,25 @@ slate.Variants = (function () {
      *
      * @param  {variant} variant - Currently selected variant
      */
-    _updateMasterSelect: function (variant) {
+    _updateMasterSelect(variant) {
       $(this.originalSelectorId, this.$container)[0].value = variant.id;
-    }
+    },
   });
 
   return Variants;
 })();
 
-
-/*================ Sections ================*/
+/*= =============== Sections ================ */
 /**
  * Product Template Script
  * ------------------------------------------------------------------------------
  * A file that contains scripts highly couple code to the Product template.
  *
-   * @namespace product
+ * @namespace product
  */
 
-theme.Product = (function () {
-
-  var selectors = {
+theme.Product = (function() {
+  const selectors = {
     addToCart: '[data-add-to-cart]',
     addToCartText: '[data-add-to-cart-text]',
     comparePrice: '[data-compare-price]',
@@ -748,7 +793,7 @@ theme.Product = (function () {
     productJson: '[data-product-json]',
     productPrice: '[data-product-price]',
     productThumbs: '[data-product-single-thumbnail]',
-    singleOptionSelector: '[data-single-option-selector]'
+    singleOptionSelector: '[data-single-option-selector]',
   };
 
   /**
@@ -758,7 +803,7 @@ theme.Product = (function () {
    */
   function Product(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.product';
@@ -769,35 +814,54 @@ theme.Product = (function () {
       return;
     }
 
-    this.productSingleObject = JSON.parse($(selectors.productJson, this.$container).html());
-    this.settings.imageSize = slate.Image.imageSize($(selectors.productFeaturedImage, this.$container).attr('src'));
+    this.productSingleObject = JSON.parse(
+      $(selectors.productJson, this.$container).html()
+    );
+    this.settings.imageSize = slate.Image.imageSize(
+      $(selectors.productFeaturedImage, this.$container).attr('src')
+    );
 
-    $(selectors.productThumbs, this.$container).on('click', this.updateProductImageFromThumb.bind(this));
+    $(selectors.productThumbs, this.$container).on(
+      'click',
+      this.updateProductImageFromThumb.bind(this)
+    );
 
-    slate.Image.preload(this.productSingleObject.images, this.settings.imageSize);
+    slate.Image.preload(
+      this.productSingleObject.images,
+      this.settings.imageSize
+    );
 
     this.initVariants();
   }
 
   Product.prototype = $.extend({}, Product.prototype, {
-
     /**
      * Handles change events from the variant inputs
      */
-    initVariants: function () {
-      var options = {
+    initVariants() {
+      const options = {
         $container: this.$container,
-        enableHistoryState: this.$container.data('enable-history-state') || false,
+        enableHistoryState:
+          this.$container.data('enable-history-state') || false,
         singleOptionSelector: selectors.singleOptionSelector,
         originalSelectorId: selectors.originalSelectorId,
-        product: this.productSingleObject
+        product: this.productSingleObject,
       };
 
       this.variants = new slate.Variants(options);
 
-      this.$container.on('variantChange' + this.namespace, this.updateAddToCartState.bind(this));
-      this.$container.on('variantImageChange' + this.namespace, this.updateProductImage.bind(this));
-      this.$container.on('variantPriceChange' + this.namespace, this.updateProductPrices.bind(this));
+      this.$container.on(
+        `variantChange${this.namespace}`,
+        this.updateAddToCartState.bind(this)
+      );
+      this.$container.on(
+        `variantImageChange${this.namespace}`,
+        this.updateProductImage.bind(this)
+      );
+      this.$container.on(
+        `variantPriceChange${this.namespace}`,
+        this.updateProductPrices.bind(this)
+      );
     },
 
     /**
@@ -806,21 +870,25 @@ theme.Product = (function () {
      * @param {boolean} enabled - Decides whether cart is enabled or disabled
      * @param {string} text - Updates the text notification content of the cart
      */
-    updateAddToCartState: function (evt) {
-      var variant = evt.variant;
+    updateAddToCartState(evt) {
+      const { variant } = evt;
 
       if (variant) {
         $(selectors.priceWrapper, this.$container).removeClass('is-hidden');
       } else {
         $(selectors.addToCart, this.$container).prop('disabled', true);
-        $(selectors.addToCartText, this.$container).html(theme.strings.unavailable);
+        $(selectors.addToCartText, this.$container).html(
+          theme.strings.unavailable
+        );
         $(selectors.priceWrapper, this.$container).addClass('is-hidden');
         return;
       }
 
       if (variant.available) {
         $(selectors.addToCart, this.$container).prop('disabled', false);
-        $(selectors.addToCartText, this.$container).html(theme.strings.addToCart);
+        $(selectors.addToCartText, this.$container).html(
+          theme.strings.addToCart
+        );
       } else {
         $(selectors.addToCart, this.$container).prop('disabled', true);
         $(selectors.addToCartText, this.$container).html(theme.strings.soldOut);
@@ -833,16 +901,25 @@ theme.Product = (function () {
      * @param {string} productPrice - The current price of the product
      * @param {string} comparePrice - The original price of the product
      */
-    updateProductPrices: function (evt) {
-      var variant = evt.variant;
-      var $comparePrice = $(selectors.comparePrice, this.$container);
-      var $compareEls = $comparePrice.add(selectors.comparePriceText, this.$container);
+    updateProductPrices(evt) {
+      const { variant } = evt;
+      const $comparePrice = $(selectors.comparePrice, this.$container);
+      const $compareEls = $comparePrice.add(
+        selectors.comparePriceText,
+        this.$container
+      );
 
-      $(selectors.productPrice, this.$container)
-        .html(slate.Currency.formatMoney(variant.price, theme.moneyFormat));
+      $(selectors.productPrice, this.$container).html(
+        slate.Currency.formatMoney(variant.price, theme.moneyFormat)
+      );
 
       if (variant.compare_at_price > variant.price) {
-        $comparePrice.html(slate.Currency.formatMoney(variant.compare_at_price, theme.moneyFormat));
+        $comparePrice.html(
+          slate.Currency.formatMoney(
+            variant.compare_at_price,
+            theme.moneyFormat
+          )
+        );
         $compareEls.removeClass('is-hidden');
       } else {
         $comparePrice.html('');
@@ -855,11 +932,17 @@ theme.Product = (function () {
      *
      * @param {string} src - Image src URL
      */
-    updateProductImage: function (evt) {
-      var variant = evt.variant;
-      var sizedImgUrl = slate.Image.getSizedImageUrl(variant.featured_image.src, this.settings.imageSize);
+    updateProductImage(evt) {
+      const { variant } = evt;
+      const sizedImgUrl = slate.Image.getSizedImageUrl(
+        variant.featured_image.src,
+        this.settings.imageSize
+      );
 
-      $(selectors.productFeaturedImage, this.$container).attr('src', sizedImgUrl);
+      $(selectors.productFeaturedImage, this.$container).attr(
+        'src',
+        sizedImgUrl
+      );
     },
 
     /**
@@ -867,25 +950,24 @@ theme.Product = (function () {
      *
      * @param {string} src - Image src URL
      */
-    updateProductImageFromThumb: function (evt) {
+    updateProductImageFromThumb(evt) {
       evt.preventDefault();
-      var imgUrl = $(evt.currentTarget).attr('href');
+      const imgUrl = $(evt.currentTarget).attr('href');
       $(selectors.productFeaturedImage, this.$container).attr('src', imgUrl);
     },
 
     /**
      * Event callback for Theme Editor `section:unload` event
      */
-    onUnload: function () {
+    onUnload() {
       this.$container.off(this.namespace);
-    }
+    },
   });
 
   return Product;
 })();
 
-
-/*================ Templates ================*/
+/*= =============== Templates ================ */
 /**
  * Customer Addresses Script
  * ------------------------------------------------------------------------------
@@ -895,8 +977,8 @@ theme.Product = (function () {
  * @namespace customerAddresses
  */
 
-theme.customerAddresses = (function () {
-  var $newAddressForm = $('#AddressNewForm');
+theme.customerAddresses = function() {
+  const $newAddressForm = $('#AddressNewForm');
 
   if (!$newAddressForm.length) {
     return;
@@ -904,42 +986,50 @@ theme.customerAddresses = (function () {
 
   // Initialize observers on address selectors, defined in shopify_common.js
   if (Shopify) {
-    new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
-      hideElement: 'AddressProvinceContainerNew'
-    });
+    new Shopify.CountryProvinceSelector(
+      'AddressCountryNew',
+      'AddressProvinceNew',
+      {
+        hideElement: 'AddressProvinceContainerNew',
+      }
+    );
   }
 
   // Initialize each edit form's country/province selector
-  $('.address-country-option').each(function () {
-    var formId = $(this).data('form-id');
-    var countrySelector = 'AddressCountry_' + formId;
-    var provinceSelector = 'AddressProvince_' + formId;
-    var containerSelector = 'AddressProvinceContainer_' + formId;
+  $('.address-country-option').each(function() {
+    const formId = $(this).data('form-id');
+    const countrySelector = `AddressCountry_${formId}`;
+    const provinceSelector = `AddressProvince_${formId}`;
+    const containerSelector = `AddressProvinceContainer_${formId}`;
 
     new Shopify.CountryProvinceSelector(countrySelector, provinceSelector, {
-      hideElement: containerSelector
+      hideElement: containerSelector,
     });
   });
 
   // Toggle new/edit address forms
-  $('.address-new-toggle').on('click', function () {
+  $('.address-new-toggle').on('click', function() {
     $newAddressForm.toggleClass('is-hidden');
   });
 
-  $('.address-edit-toggle').on('click', function () {
-    var formId = $(this).data('form-id');
-    $('#EditAddress_' + formId).toggleClass('is-hidden');
+  $('.address-edit-toggle').on('click', function() {
+    const formId = $(this).data('form-id');
+    $(`#EditAddress_${formId}`).toggleClass('is-hidden');
   });
 
-  $('.address-delete').on('click', function () {
-    var $el = $(this);
-    var formId = $el.data('form-id');
-    var confirmMessage = $el.data('confirm-message');
-    if (confirm(confirmMessage || 'Are you sure you wish to delete this address?')) {
-      Shopify.postLink('/account/addresses/' + formId, { parameters: { _method: 'delete' } });
+  $('.address-delete').on('click', function() {
+    const $el = $(this);
+    const formId = $el.data('form-id');
+    const confirmMessage = $el.data('confirm-message');
+    if (
+      confirm(confirmMessage || 'Are you sure you wish to delete this address?')
+    ) {
+      Shopify.postLink(`/account/addresses/${formId}`, {
+        parameters: { _method: 'delete' },
+      });
     }
   });
-});
+};
 
 /**
  * Reset Password Template Script
@@ -949,10 +1039,10 @@ theme.customerAddresses = (function () {
  * @namespace password
  */
 
-theme.customerLogin = (function () {
-  var config = {
+theme.customerLogin = function() {
+  const config = {
     recoverPasswordForm: '#RecoverPassword',
-    hideRecoverPasswordLink: '#HideRecoverPasswordLink'
+    hideRecoverPasswordLink: '#HideRecoverPasswordLink',
   };
 
   if (!$(config.recoverPasswordForm).length) {
@@ -971,7 +1061,7 @@ theme.customerLogin = (function () {
   }
 
   function checkUrlHash() {
-    var hash = window.location.hash;
+    const { hash } = window.location;
 
     // Allow deep linking to recover password form
     if (hash === '#recover') {
@@ -991,7 +1081,7 @@ theme.customerLogin = (function () {
    *  Show reset password success message
    */
   function resetPasswordSuccess() {
-    var $formState = $('.reset-password-success');
+    const $formState = $('.reset-password-success');
 
     // check if reset password form was successfully submited.
     if (!$formState.length) {
@@ -1001,7 +1091,7 @@ theme.customerLogin = (function () {
     // show success message
     $('#ResetSuccess').removeClass('is-hidden');
   }
-});
+};
 
 /**
  * Password Template Script
@@ -1011,92 +1101,94 @@ theme.customerLogin = (function () {
  * @namespace password
  */
 
-theme.passwordLogin = (function () {
-  var config = {
+theme.passwordLogin = function() {
+  const config = {
     passwordForm: '#PasswordLogin',
-    passwordLink: '#PasswordLoginLink'
+    passwordLink: '#PasswordLoginLink',
   };
 
   if (!$(config.passwordForm).length) {
     return;
   }
 
-  $(config.passwordLink).on('click', function (e) {
+  $(config.passwordLink).on('click', function(e) {
     e.preventDefault();
     $(config.passwordForm).toggleClass('is-hidden');
   });
-});
+};
 
-theme.navToggle = function () {
+theme.navToggle = function() {
   // Get all "navbar-burger" elements
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  const $navbarBurgers = Array.prototype.slice.call(
+    document.querySelectorAll('.navbar-burger'),
+    0
+  );
 
   // Check if there are any navbar burgers
   if ($navbarBurgers.length > 0) {
-
     // Add a click event on each of them
     $navbarBurgers.forEach(el => {
       el.addEventListener('click', () => {
-
         // Get the target from the "data-target" attribute
-        const target = el.dataset.target;
+        const { target } = el.dataset;
         const $target = document.getElementById(target);
 
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         el.classList.toggle('is-active');
         $target.classList.toggle('is-active');
-
       });
     });
   }
-}
+};
 
 /**
  * Product Tabs
  */
 theme.Tabs = (function() {
- var selectors = {
-   tabs: '.tabs'
- };
+  const selectors = {
+    tabs: '.tabs',
+  };
 
- function Tabs(container) {
-   this.$container = $(container);
-   var sectionId = this.$container.attr('data-section-id');
-   this.settings = {};
-   this.namespace = '.tab';
+  function Tabs(container) {
+    this.$container = $(container);
+    const sectionId = this.$container.attr('data-section-id');
+    this.settings = {};
+    this.namespace = '.tab';
 
-   this.initTabs();
- }
+    this.initTabs();
+  }
 
- Tabs.prototype = $.extend({}, Tabs.prototype, {
-   initTabs: function() {
-     $(selectors.tabs + ' ul > li').on('click', function(){
-       $(selectors.tabs + ' ul > li').removeClass('is-active');
-       $(this).addClass('is-active');
-       $(selectors.tabs + ' ul > div').slideUp();
-       $(this).next('div').slideToggle();
-     });
-   },
-   onBlockSelect: function(event) {
-     var $block;
-     $block = $(event.target);
-     $block.trigger('click');
-   }
- });
+  Tabs.prototype = $.extend({}, Tabs.prototype, {
+    initTabs() {
+      $(`${selectors.tabs} ul > li`).on('click', function() {
+        $(`${selectors.tabs} ul > li`).removeClass('is-active');
+        $(this).addClass('is-active');
+        $(`${selectors.tabs} ul > div`).slideUp();
+        $(this)
+          .next('div')
+          .slideToggle();
+      });
+    },
+    onBlockSelect(event) {
+      let $block;
+      $block = $(event.target);
+      $block.trigger('click');
+    },
+  });
 
- return Tabs;
+  return Tabs;
 })();
 /**
  * Usps Slider On Mobile
  */
 theme.Usps = (function() {
-  var selectors = {
-    usps: '.usps-wrapper'
+  const selectors = {
+    usps: '.usps-wrapper',
   };
 
   function Usps(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.usp';
@@ -1106,7 +1198,7 @@ theme.Usps = (function() {
   }
 
   Usps.prototype = $.extend({}, Usps.prototype, {
-    initSlider: function() {
+    initSlider() {
       if ($(window).width() <= 768) {
         if (!$(selectors.usps, this.$container).hasClass('slick-initialized')) {
           $(selectors.usps, this.$container).slick({
@@ -1114,37 +1206,40 @@ theme.Usps = (function() {
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false,
-            dots: false
+            dots: false,
           });
         }
-      } else {
-        if ($(selectors.usps, this.$container).hasClass('slick-initialized')) {
-          $(selectors.usps, this.$container).slick('unslick');
-        }
+      } else if (
+        $(selectors.usps, this.$container).hasClass('slick-initialized')
+      ) {
+        $(selectors.usps, this.$container).slick('unslick');
       }
     },
-    resizeSlider: function(){
+    resizeSlider() {
       $(window).on('load resize orientationchange', this.initSlider);
     },
-    onReorder: function() {
+    onReorder() {
       this.initSlider();
     },
-    onBlockSelect: function(event) {
+    onBlockSelect(event) {
       if ($(selectors.usps, this.$container).hasClass('slick-initialized')) {
-        var $block, slideIndex;
+        let $block;
+        let slideIndex;
         $block = $(event.target);
         slideIndex = parseInt($block.data('slick-index'), 10);
-        $(selectors.usps, this.$container).slick('slickGoTo', slideIndex).slick('slickPause');
+        $(selectors.usps, this.$container)
+          .slick('slickGoTo', slideIndex)
+          .slick('slickPause');
       }
     },
-    onBlockDeselect: function() {
+    onBlockDeselect() {
       this.initSlider();
     },
-    onUnload: function() {
+    onUnload() {
       if ($(selectors.usps, this.$container).hasClass('slick-initialized')) {
         $(selectors.usps, this.$container).slick('unslick');
       }
-    }
+    },
   });
 
   return Usps;
@@ -1154,13 +1249,13 @@ theme.Usps = (function() {
  * Hero Banner
  */
 theme.Banner = (function() {
-  var selectors = {
-    hero_banner: '.banner-wrapper'
+  const selectors = {
+    hero_banner: '.banner-wrapper',
   };
 
   function Banner(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.banner';
@@ -1169,30 +1264,33 @@ theme.Banner = (function() {
   }
 
   Banner.prototype = $.extend({}, Banner.prototype, {
-    initSlider: function() {
+    initSlider() {
       $(selectors.hero_banner, this.$container).slick({
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: $(selectors.hero_banner, this.$container).data('banner-arrows'),
-        dots: $(selectors.hero_banner, this.$container).data('banner-dots')
+        dots: $(selectors.hero_banner, this.$container).data('banner-dots'),
       });
     },
-    onReorder: function() {
+    onReorder() {
       this.initSlider();
     },
-    onBlockSelect: function(event) {
-      var $block, slideIndex;
+    onBlockSelect(event) {
+      let $block;
+      let slideIndex;
       $block = $(event.target);
       slideIndex = parseInt($block.data('slick-index'), 10);
-      $(selectors.hero_banner, this.$container).slick('slickGoTo', slideIndex).slick('slickPause');
+      $(selectors.hero_banner, this.$container)
+        .slick('slickGoTo', slideIndex)
+        .slick('slickPause');
     },
-    onBlockDeselect: function() {
+    onBlockDeselect() {
       this.initSlider();
     },
-    onUnload: function() {
+    onUnload() {
       $(selectors.hero_banner, this.$container).slick('unslick');
-    }
+    },
   });
 
   return Banner;
@@ -1202,13 +1300,13 @@ theme.Banner = (function() {
  * Logo Slider
  */
 theme.LogoSlider = (function() {
-  var selectors = {
-    logo_slider: '.logo-slider'
+  const selectors = {
+    logo_slider: '.logo-slider',
   };
 
   function LogoSlider(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.logo-slide';
@@ -1217,10 +1315,12 @@ theme.LogoSlider = (function() {
   }
 
   LogoSlider.prototype = $.extend({}, LogoSlider.prototype, {
-    initLogoSlider: function() {
+    initLogoSlider() {
       $(selectors.logo_slider, this.$container).slick({
         infinite: true,
-        slidesToShow: $(selectors.logo_slider, this.$container).data('slides-to-show'),
+        slidesToShow: $(selectors.logo_slider, this.$container).data(
+          'slides-to-show'
+        ),
         slidesToScroll: 1,
         arrows: $(selectors.logo_slider, this.$container).data('banner-arrows'),
         dots: $(selectors.logo_slider, this.$container).data('banner-dots'),
@@ -1228,21 +1328,24 @@ theme.LogoSlider = (function() {
           {
             breakpoint: 768,
             settings: {
-              slidesToShow: 1
-            }
-          }
-        ]
+              slidesToShow: 1,
+            },
+          },
+        ],
       });
     },
-    onBlockSelect: function(event) {
-      var $block, slideIndex;
+    onBlockSelect(event) {
+      let $block;
+      let slideIndex;
       $block = $(event.target);
       slideIndex = parseInt($block.data('slick-index'), 10);
-      $(selectors.logo_slider, this.$container).slick('slickGoTo', slideIndex).slick('slickPause');
+      $(selectors.logo_slider, this.$container)
+        .slick('slickGoTo', slideIndex)
+        .slick('slickPause');
     },
-    onUnload: function() {
+    onUnload() {
       $(selectors.logo_slider, this.$container).slick('unslick');
-    }
+    },
   });
 
   return LogoSlider;
@@ -1252,13 +1355,13 @@ theme.LogoSlider = (function() {
  * Testimonials Slider
  */
 theme.Testimonials = (function() {
-  var selectors = {
-    testimonial_slider: '.testimonial-slider'
+  const selectors = {
+    testimonial_slider: '.testimonial-slider',
   };
 
   function Testimonials(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.banner';
@@ -1267,35 +1370,42 @@ theme.Testimonials = (function() {
   }
 
   Testimonials.prototype = $.extend({}, Testimonials.prototype, {
-    initTestimonials: function() {
+    initTestimonials() {
       $(selectors.testimonial_slider, this.$container).slick({
         infinite: true,
         slidesToShow: 2,
         slidesToScroll: 1,
-        arrows: $(selectors.testimonial_slider, this.$container).data('banner-arrows'),
-        dots: $(selectors.testimonial_slider, this.$container).data('banner-dots'),
+        arrows: $(selectors.testimonial_slider, this.$container).data(
+          'banner-arrows'
+        ),
+        dots: $(selectors.testimonial_slider, this.$container).data(
+          'banner-dots'
+        ),
         responsive: [
           {
             breakpoint: 768,
             settings: {
-              slidesToShow: 1
-            }
-          }
-        ]
+              slidesToShow: 1,
+            },
+          },
+        ],
       });
     },
-    onReorder: function() {
+    onReorder() {
       this.initTestimonials();
     },
-    onBlockSelect: function(event) {
-      var $block, slideIndex;
+    onBlockSelect(event) {
+      let $block;
+      let slideIndex;
       $block = $(event.target);
       slideIndex = parseInt($block.data('slick-index'), 10);
-      $(selectors.testimonial_slider, this.$container).slick('slickGoTo', slideIndex).slick('slickPause');
+      $(selectors.testimonial_slider, this.$container)
+        .slick('slickGoTo', slideIndex)
+        .slick('slickPause');
     },
-    onUnload: function() {
+    onUnload() {
       $(selectors.testimonial_slider, this.$container).slick('unslick');
-    }
+    },
   });
 
   return Testimonials;
@@ -1305,13 +1415,13 @@ theme.Testimonials = (function() {
  * Image Slider
  */
 theme.ImageSlider = (function() {
-  var selectors = {
-    image_slider: '.image-slider'
+  const selectors = {
+    image_slider: '.image-slider',
   };
 
   function ImageSlider(container) {
     this.$container = $(container);
-    var sectionId = this.$container.attr('data-section-id');
+    const sectionId = this.$container.attr('data-section-id');
 
     this.settings = {};
     this.namespace = '.banner';
@@ -1320,7 +1430,7 @@ theme.ImageSlider = (function() {
   }
 
   ImageSlider.prototype = $.extend({}, ImageSlider.prototype, {
-    initImageSlider: function() {
+    initImageSlider() {
       $(selectors.image_slider, this.$container).slick({
         infinite: true,
         slidesToShow: 5,
@@ -1334,81 +1444,89 @@ theme.ImageSlider = (function() {
             breakpoint: 1024,
             settings: {
               slidesToShow: 3,
-              slidesToScroll: 3
-            }
+              slidesToScroll: 3,
+            },
           },
           {
             breakpoint: 768,
             settings: {
               slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-        ]
+              slidesToScroll: 1,
+            },
+          },
+        ],
       });
     },
-    onReorder: function() {
+    onReorder() {
       this.initImageSlider();
     },
-    onBlockSelect: function(event) {
-      var $block, slideIndex;
+    onBlockSelect(event) {
+      let $block;
+      let slideIndex;
       $block = $(event.target);
       slideIndex = parseInt($block.data('slick-index'), 10);
-      $(selectors.image_slider, this.$container).slick('slickGoTo', slideIndex).slick('slickPause');
+      $(selectors.image_slider, this.$container)
+        .slick('slickGoTo', slideIndex)
+        .slick('slickPause');
     },
-    onBlockDeselect: function() {
+    onBlockDeselect() {
       this.initImageSlider();
     },
-    onUnload: function() {
+    onUnload() {
       $(selectors.image_slider, this.$container).slick('unslick');
-    }
+    },
   });
 
   return ImageSlider;
 })();
 
 // Theme Cache
-theme.cacheSelectors = function () {
+theme.cacheSelectors = function() {
   theme.cache = {
     $html: $('html'),
     $body: $('body'),
 
     $modals: $('.modal'),
     $modalTrigger: $('.modal-trigger'),
-    $modalCloses: $('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button')
+    $modalCloses: $(
+      '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button'
+    ),
   };
 };
 
 theme.modal = function() {
-  theme.cache.$modalTrigger.on('click',function(e) {
+  theme.cache.$modalTrigger.on('click', function(e) {
     e.preventDefault();
-    var trigger = $(this);
-    var target = trigger.data('target');
+    const trigger = $(this);
+    const target = trigger.data('target');
 
     $(target).addClass('is-active');
     theme.cache.$html.addClass('is-clipped');
   });
 
-  theme.cache.$modalCloses.on('click',function(e) {
+  theme.cache.$modalCloses.on('click', function(e) {
     theme.closeModals();
   });
 
-  $(document).on('keyup',function(e) {
+  $(document).on('keyup', function(e) {
     if (e.keyCode == 27) {
       theme.closeModals();
     }
   });
-}
+};
 
 theme.closeModals = function() {
   theme.cache.$html.removeClass('is-clipped');
   theme.cache.$modals.removeClass('is-active');
-  $("#product-video iframe").attr("src", $("#product-video iframe").attr("src"));
-}
+  $('#product-video iframe').attr(
+    'src',
+    $('#product-video iframe').attr('src')
+  );
+};
 
-$(document).ready(function () {
+$(document).ready(function() {
   // Run section based JS
-  var sections = new slate.Sections();
+  const sections = new slate.Sections();
   sections.register('product', theme.Product);
   sections.register('product-tabs', theme.Tabs);
   sections.register('usps-section', theme.Usps);
@@ -1420,7 +1538,7 @@ $(document).ready(function () {
   // Common a11y fixes
   slate.a11y.pageLinkFocus($(window.location.hash));
 
-  $('.in-page-link').on('click', function (evt) {
+  $('.in-page-link').on('click', function(evt) {
     slate.a11y.pageLinkFocus($(evt.currentTarget.hash));
   });
 
@@ -1430,7 +1548,10 @@ $(document).ready(function () {
 
   // Apply a specific class to the html element for browser support of cookies.
   if (slate.cart.cookiesEnabled()) {
-    document.documentElement.className = document.documentElement.className.replace('supports-no-cookies', 'supports-cookies');
+    document.documentElement.className = document.documentElement.className.replace(
+      'supports-no-cookies',
+      'supports-cookies'
+    );
   }
 
   // Run the theme related functions
