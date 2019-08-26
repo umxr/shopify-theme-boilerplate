@@ -75,3 +75,13 @@ export const compact = array => {
  */
 export const defaultTo = (value, defaultValue) =>
   value == null || value !== value ? defaultValue : value;
+
+export const cookiesEnabled = () => {
+  let { cookieEnabled } = navigator;
+
+  if (!cookieEnabled) {
+    document.cookie = 'testcookie';
+    cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
+  }
+  return cookieEnabled;
+};
