@@ -850,6 +850,26 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
+"@shopify/theme-a11y@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/theme-a11y/-/theme-a11y-3.0.0.tgz#4e3361c6c011cb8ce825d4ad164e5e066f73e6d3"
+  integrity sha512-ncqgPLut5GCuVCXu17lXogglz7n6EBg6L7oa2MTF2IcVsHq/HL+Krdnr25EdOPxDQjwPRyEwyKJCzSs5WceVjA==
+
+"@shopify/theme-currency@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/theme-currency/-/theme-currency-3.0.0.tgz#6f8c8fae41006cb32cbf312fcf38cf46fb8dfe75"
+  integrity sha512-fRsG/KFo7ktubi0Hp2DPG5+cEL/Ew1rQb20yqKdQ01+7xmlJh+k4udNSIu8VQmSsTGyznN2EcyJAYy0Sxbbncg==
+
+"@shopify/theme-images@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/theme-images/-/theme-images-3.0.0.tgz#e3bdcdd4d1b947df519e645e4489e1dd58d27cfc"
+  integrity sha512-NJnfq+ByCTWyJWMbeNOOIYMlrUKn5NwP8EnqOvEtnteEvtbUMMc4JSWq3Gt4CnaqXJvGy/FbLTHmLs9ahYzVZw==
+
+"@shopify/theme-rte@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/theme-rte/-/theme-rte-3.0.0.tgz#f96bb46e2ad225cf07f7eb64652cccc3f207c0db"
+  integrity sha512-az6UtcSEm+O+xqiVG3dRSeVykOHDAnTnPKohOFZSVrJezoDJWaKjZcZZLh8YCm0XAz9NyFAknENAk4tzHhSRFQ==
+
 "@types/q@^1.5.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
@@ -892,6 +912,11 @@ acorn@^6.0.1, acorn@^6.0.7:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
+
+add@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/add/-/add-2.0.6.tgz#248f0a9f6e5a528ef2295dbeec30532130ae2235"
+  integrity sha1-JI8Kn25aUo7yKV2+7DBTITCuIjU=
 
 ajv@^6.5.5, ajv@^6.9.1:
   version "6.10.0"
@@ -2178,6 +2203,11 @@ electron-to-chromium@^1.3.164:
   version "1.3.166"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.166.tgz#99d267514f4b92339788172400bc527545deb75b"
   integrity sha512-7XwtJz81H/PBnkmQ/07oVPOGTkBZs6ibZN8OqXNUrxjRPzR0Xj+MFcMmRZEXGilEg1Pm+97V8BZVI63qnBX1hQ==
+
+element-matches@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/element-matches/-/element-matches-0.1.2.tgz#7345cb71e965bd2b12f725e524591c102198361a"
+  integrity sha512-yWh1otcs3OKUWDvu/IxyI36ZI3WNaRZlI0uG/DK6fu0pap0VYZ0J5pEGTk1zakme+hT0OKHwhlHc0N5TJhY6yQ==
 
 elliptic@^6.0.0:
   version "6.4.1"
@@ -6139,3 +6169,8 @@ yallist@^3.0.0, yallist@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.0.3.tgz#b4b049e314be545e3ce802236d6cd22cd91c3de9"
   integrity sha512-S+Zk8DEWE6oKpV+vI3qWkaK+jSbIK86pCwe2IF/xwIpQ8jEuxpw9NyaGjmp9+BoJv5FV2piqCDcoCtStppiq2A==
+
+yarn@^1.17.3:
+  version "1.17.3"
+  resolved "https://registry.yarnpkg.com/yarn/-/yarn-1.17.3.tgz#60e0b77d079eb78e753bb616f7592b51b6a9adce"
+  integrity sha512-CgA8o7nRZaQvmeF/WBx2FC7f9W/0X59T2IaLYqgMo6637wfp5mMEsM3YXoJtKUspnpmDJKl/gGFhnqS+sON7hA==

@@ -1,3 +1,7 @@
 {
-	"extends": ["wesbos"]
+  "extends": ["wesbos"],
+  "rules": {
+    "no-plusplus": "off",
+    "no-self-compare": "off"
+  }
 }

@@ -1,28 +1,28 @@
 // https://github.com/unlight/gulp-cssimport
-var gulp = require('gulp');
-var babel = require('gulp-babel');
-var cssimport = require('gulp-cssimport');
-var sass = require('gulp-sass');
-var concat = require('gulp-concat');
-var replace = require('gulp-replace');
-var plumber = require('gulp-plumber');
-var autoprefixer = require('gulp-autoprefixer');
-var rename = require('gulp-rename');
-var gulpMerge = require('gulp-merge');
+const gulp = require('gulp');
+const babel = require('gulp-babel');
+const cssimport = require('gulp-cssimport');
+const sass = require('gulp-sass');
+const concat = require('gulp-concat');
+const replace = require('gulp-replace');
+const plumber = require('gulp-plumber');
+const autoprefixer = require('gulp-autoprefixer');
+const rename = require('gulp-rename');
+const gulpMerge = require('gulp-merge');
 
-var polyfill = './node_modules/@babel/polyfill/browser.js';
+const polyfill = './node_modules/@babel/polyfill/browser.js';
 
-var globalConfig = {
-  src: 'css' // your dev stylesheet directory. No trailing slash
+const globalConfig = {
+  src: 'css', // your dev stylesheet directory. No trailing slash
 };
 
 // Process CSS
 gulp.task('styles', function() {
   return gulp
-    .src(globalConfig.src + '/theme.scss.liquid')
+    .src(`${globalConfig.src}/theme.scss.liquid`)
     .pipe(plumber())
     .pipe(cssimport())
-    .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+    .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
     .pipe(autoprefixer())
     .pipe(concat('style.css.liquid'))
     .pipe(replace('"{{', '{{'))
@@ -49,7 +49,7 @@ gulp.task('javascript', function() {
 
 // Watch files
 gulp.task('watch', function() {
-  gulp.watch(globalConfig.src + '/**/*.*', ['styles']);
+  gulp.watch(`${globalConfig.src}/**/*.*`, ['styles']);
   gulp.watch(['js/*.js', '!js/*.min.js'], ['javascript']);
 });
 
