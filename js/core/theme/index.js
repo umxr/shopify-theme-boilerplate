@@ -10,6 +10,8 @@ theme.cache = {
   modalCloseTriggers: $(
     '.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button'
   ),
+  passwordForm: $('#PasswordLogin'),
+  passwordLink: $('#PasswordLoginLink'),
 };
 
 export default theme;
