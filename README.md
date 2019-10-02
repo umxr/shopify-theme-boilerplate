@@ -1,6 +1,6 @@
 TODO
 
-refactor all of this shit
+refactor all of this.....
 
 - replace slate.Sections with shopify lib
 - replace slate.Currency with shopify lib
